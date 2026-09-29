@@ -74,8 +74,6 @@ jobs:
           key: ${{ secrets.SSH_KEY_PRIVATE }}
 
           script: |
-            cd /home/ubuntu/ecommerce
-
-            chmod +x deploy.sh
-
-            ./deploy.sh
+              cd /home/ubuntu/Ecommerce-Devops-Project
+              chmod +x deploy.sh
+              ./deploy.sh
