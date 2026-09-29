@@ -1,0 +1,84 @@
+services:
+
+  # =========================
+  # 1. MySQL Database
+  # =========================
+  mysql:
+    image: mysql:8.0
+    container_name: ecommerce-mysql
+    restart: unless-stopped
+
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ecommerce
+      MYSQL_USER: ecommerce
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+    networks:
+      - ecommerce-network
+
+
+  # =========================
+  # 2. Backend API
+  # =========================
+  backend:
+    image: nilesh2033parmardevops/ecommerce-backend:latest
+    container_name: ecommerce-backend
+    restart: unless-stopped
+
+    environment:
+      NODE_ENV: production
+      PORT: 5000
+
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_NAME: ecommerce
+      DB_USER: ecommerce
+      DB_PASSWORD: ${MYSQL_PASSWORD}
+
+      JWT_SECRET: ${JWT_SECRET}
+
+    depends_on:
+      - mysql
+
+    ports:
+      - "5000:5000"
+
+    networks:
+      - ecommerce-network
+
+
+  # =========================
+  # 3. Frontend
+  # =========================
+  frontend:
+    image: nilesh2033parmardevops/ecommerce-frontend:latest
+    container_name: ecommerce-frontend
+    restart: unless-stopped
+
+    depends_on:
+      - backend
+
+    ports:
+      - "80:80"
+
+    networks:
+      - ecommerce-network
+
+
+# =========================
+# Persistent MySQL Storage
+# =========================
+volumes:
+  mysql_data:
+
+
+# =========================
+# Application Network
+# =========================
+networks:
+  ecommerce-network:
+    driver: bridge
