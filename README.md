@@ -56,7 +56,7 @@ ecommerce-project/
 
 ### 1. Authentication
 - `POST /api/auth/register` — Register new user with hashed password (bcrypt).
-- `POST /api/auth/login` — Authenticate user and receive JWT.
+- `POST /api/auth/login` — Authenticate user & receive JWT.
 - `GET /api/auth/me` — Retrieve current authenticated user details.
 
 ### 2. Product Management
